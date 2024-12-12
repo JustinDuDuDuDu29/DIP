@@ -5,7 +5,6 @@ import glob
 import argparse
 import os
 
-
 def gamma_correction(img: np.ndarray, gamma: int = 1):
     '''
     implement the gamma correction
@@ -36,36 +35,32 @@ def erase_car_light(image1: np.ndarray, image2: np.ndarray, gamma:int = 20, ligh
     L1 = np.max(image2, axis=-1)
     erase_image = L1 - L0
 
-    _, binary_image = cv2.threshold(erase_image, light_threshold, 255, cv2.THRESH_BINARY)
+    # _, binary_image = cv2.threshold(erase_image, light_threshold, 255, cv2.THRESH_BINARY)
     _, binary_image_2 = cv2.threshold(erase_image, light_threshold, 255, cv2.THRESH_BINARY_INV)
     black_background = np.zeros_like(image2)
 
-#*  the image that not contain the cat light
-    non_mask_image = cv2.bitwise_or(image2, black_background, mask=binary_image)
-#     cv2.imshow("non-mask", non_mask_image)
-#     cv2.waitKey(0)
-
+    #*  the image that doesn't contain the car light
+    # non_mask_image = cv2.bitwise_or(image2, black_background, mask=binary_image)
 
     contours, _ = cv2.findContours(binary_image_2.astype(np.uint8), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-#*    increase the contours radius
-#
-#     resize_bg = np.zeros_like(image2)
-#     for con in contours:
-#         t = cv2.approxPolyDP(con, 10, True)
-#         center, radius = cv2.minEnclosingCircle(t)
-#         #* print("radius",radius)
-#         resize_bg = cv2.circle(resize_bg, center=(int(center[0]), int(center[1])), radius=int(radius), color=(255, 255, 255), thickness=-1)
+    #*  use to increase the contours radius
+    resize_bg = np.zeros_like(image2)
+    for con in contours:
+        t = cv2.approxPolyDP(con, 10, True)
+        center, radius = cv2.minEnclosingCircle(t)
+        #* print("radius",radius)
+        resize_bg = cv2.circle(resize_bg, center=(int(center[0]), int(center[1])), radius=int(radius), color=(255, 255, 255), thickness=-1)
 
-#     resize_bg = cv2.cvtColor(resize_bg, cv2.COLOR_BGR2GRAY)
-#     _, binary_resize_bg = cv2.threshold(resize_bg, 254, 255, cv2.THRESH_BINARY)
-#     _, binary_resize_bg_2 = cv2.threshold(resize_bg, 254, 255, cv2.THRESH_BINARY_INV)
-#     non_mask_image = cv2.bitwise_or(image2, black_background, mask=binary_resize_bg_2)
+    resize_bg = cv2.cvtColor(resize_bg, cv2.COLOR_BGR2GRAY)
+    _, binary_resize_bg = cv2.threshold(resize_bg, 254, 255, cv2.THRESH_BINARY)
+    _, binary_resize_bg_2 = cv2.threshold(resize_bg, 254, 255, cv2.THRESH_BINARY_INV)
+    non_mask_image = cv2.bitwise_or(image2, black_background, mask=binary_resize_bg_2)
 
-#     contours_2, _ = cv2.findContours(binary_resize_bg.astype(np.uint8), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    contours_2, _ = cv2.findContours(binary_resize_bg.astype(np.uint8), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     image1_copy = image1.copy()
-    for contour in contours:
+    for contour in contours_2:
         black_background_2 = np.zeros_like(image1_copy)
         t = cv2.approxPolyDP(contour, 10, True)
 
@@ -132,10 +127,10 @@ def main(args):
 
 if __name__ == "__main__":
         parser = argparse.ArgumentParser(description="DIP final project")
-        parser.add_argument("-fd", '--folder_de', default = "./nightmarket/YiAnOld/origin_Frame/", type = str, help = "the folder where your original images store")
-        parser.add_argument("-fe", '--folder_en', default = "./nightmarket/YiAnOld/lime_Frame/", type = str, help = "the folder where your enhance images store")
-        parser.add_argument("-fs", '--folder_s', default = "./enhance_nk/", type = str, help = "path to save process images" )
-        parser.add_argument("-g", '--gamma', default= 20, type = float, help = "the gamma correction parameter.")     
-        parser.add_argument("-lt", '-light_threshold', default = 5, type = int, help = "determine the car light threshold")  
+        parser.add_argument("-fd", '--folder_de', default = "./cartest/", type = str, help = "the folder where your original images store")
+        parser.add_argument("-fe", '--folder_en', default = "./high_res/", type = str, help = "the folder where your enhance images store")
+        parser.add_argument("-fs", '--folder_s', default = "./enhance_2/", type = str, help = "path to save process images" )
+        parser.add_argument("-g", '--gamma', default= 1.7, type = float, help = "the gamma correction parameter.")     
+        parser.add_argument("-lt", '--light_threshold', default = 5, type = int, help = "determine the car light threshold")  
         args = parser.parse_args()
         main(args)
