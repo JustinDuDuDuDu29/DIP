@@ -1,0 +1,11 @@
+ipython
+absl-py
+numpy
+opencv-python
+scikit-image
+scipy
+tensorflow-addons
+tqdm
+tensorflow>=2.13.0,<=2.15.0
+keras==2.13.1
+keras_applications==1.0.8
