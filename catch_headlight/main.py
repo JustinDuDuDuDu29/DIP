@@ -99,7 +99,6 @@ def main(args):
         file_path_en    = []
 
         for e in sub_filename:
-
                 file_path_o.extend(glob.glob(imo_dir + "*." + e))
                 file_path_en.extend(glob.glob(ime_dir + "*." + e))
                 
@@ -130,7 +129,7 @@ if __name__ == "__main__":
         parser.add_argument("-fd", '--folder_de', default = "./demo/default/", type = str, help = "the folder where your original images store")
         parser.add_argument("-fe", '--folder_en', default = "./demo/enhance/", type = str, help = "the folder where your enhance images store")
         parser.add_argument("-fs", '--folder_s', default = "./enhance3/", type = str, help = "path to save process images" )
-        parser.add_argument("-g", '--gamma', default= 20, type = float, help = "the gamma correction parameter.")     
+        parser.add_argument("-g", '--gamma', default = 20, type = float, help = "the gamma correction parameter.")     
         parser.add_argument("-lt", '--light_threshold', default = 5, type = int, help = "determine the car light threshold")  
         args = parser.parse_args()
         main(args)
