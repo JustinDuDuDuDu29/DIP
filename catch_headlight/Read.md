@@ -25,10 +25,10 @@ python main.py
 
 ## Experiment Results
 Original image:
-![original image](catch_headlight\demo\enhance\night-driving_620_Out.png)
+![original image](.\demo\enhance\night-driving_620_Out.png)
 
 Catch headlight without increasing headlight radius image:
-![without radius image](catch_headlight\demo\erase_car_light_2.png)
+![without radius image](.\demo\erase_car_light_2.png)
 
 Catch headlight using increasing radius method image:
-![radius image](catch_headlight\demo\erase_car_light.png)
+![radius image](.\demo\erase_car_light.png)
