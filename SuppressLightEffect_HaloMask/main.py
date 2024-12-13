@@ -55,7 +55,7 @@ def main(img,i,name,**args):
     _,halo_mask = cv2.threshold(gray_d, 10, 255, cv2.THRESH_BINARY) # Get the halo mask from the detail image
 
     I_halo = I_enhence.copy()
-    I_halo[halo_mask > 0] *= 0.3        # lower the halo area enhancement
+    I_halo[halo_mask > 0] *= args['maskratio']       # lower the halo area enhancement
 
     #for displaying
     # cv2.imshow("gray", gray_d)
@@ -89,10 +89,9 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Low Light Image Enhancement")
     
-    parser.add_argument("--input", type=str, default="./image/", \
-						help='path to input image')
-    parser.add_argument("--output", type=str, default="./Result/", \
-						help='path to output image')
+    parser.add_argument("--input", type=str, default="./data/input/", help='path to input image')
+    parser.add_argument("--output", type=str, default="./Result/", help='path to output image')
+    parser.add_argument("--maskratio", type=float, default= 0.3, help='the degree of suppressing the light effect')
     argspar = parser.parse_args()
     
     # print("\n### Testing LLIE model ###")
