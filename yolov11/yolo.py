@@ -21,5 +21,5 @@ def main(folder_path : str):
         print("done")
 
 if __name__ == "__main__":
-        folder_path = "../enhance_nk/"
+        folder_path = "../enhance/"
         main(folder_path)
